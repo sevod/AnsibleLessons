@@ -1,3 +1,13 @@
+### документация Ансибл
+https://docs.ansible.com/ansible/latest/
+
+### модули Ансибл
+https://docs.ansible.com/ansible/2.9/modules/modules_by_category.html
+
+### ansible-galaxy collection install amazon.aws
+пример установки коллекции
+https://galaxy.ansible.com/amazon/aws?extIdCarryOver=true&sc_cid=701f2000001OH6uAAG
+
 # Комманды Ansible
 
 ### ansible all -i hosts -m ping
