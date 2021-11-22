@@ -1,0 +1,18 @@
+#три дефиса разделяют разные задачи
+---
+# name может быть произвольным
+- name: Configure nginx web server
+# беретсф из файла hosts
+  hosts: webserver
+# задачи которые мы будем выполнять, используем для этого список
+  tasks:
+  - name: install nginix server
+# это уже модуль, устанавливаем nginx последнюю (latest) версию
+    apt:
+      name: nginx
+      state: latest
+# это уже следующая задача, используем модуль service, и запускаем nginx
+  - name: start nginx server
+    service:
+      name: nginx
+      state: started

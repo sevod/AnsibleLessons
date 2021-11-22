@@ -1,0 +1,8 @@
+[droplet]
+167.99.133.30
+206.189.58.240
+206.189.109.68
+
+[droplet:vars]
+ansible_ssh_private_key_file=~/.ssh/id_rsa
+ansible_user=root
