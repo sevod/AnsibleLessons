@@ -18,6 +18,23 @@
       unarchive:
         src: ./../distr/node-example.tgz
         dest: /root/
+    - name: Install dependencies
+      npm:
+        path: /root/react-nodejs-example-master/my-app
+    - name: Start the application
+      command:
+#        в таком виде работает, но ansible зависает, потому что не сервис а процесс, лечится (нет) async and poll
+        chdir: /root/react-nodejs-example-master/my-app
+        cmd: npm start
+      async: 1000
+      poll: 0
+    - name: Ensure app is running
+      shell: ps aux | grep node
+      register: app_status
+    - debug: msg={{app_status.stdout}}
+
+# node /root/react-nodejs-example-master/my-app/node_modules/.bin/react-scripts start --port 3001
+
 
 #  Так можно, но это избыточно
 #    - name: Copy nodejs foder to a server
@@ -30,3 +47,4 @@
 #        dest: /root/
 ##       указыаем, что все это проделывается на удаленной машине, иначе он будет пытаться распаковать с локальной
 #        remote_src: yes
+
