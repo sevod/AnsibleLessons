@@ -19,29 +19,42 @@
         name: tehuser
         comment: Tehuser Admin
         group: admin
+      #это Registering variables, сюда попадает Return Values модуля
+      register: user_creation_result1
+    - debug: msg={{user_creation_result1}}
 
 - name: Deploy nodejs app
   hosts: all
 # эти две строки для настройки пользователя, без них будет рут
   become: True
   become_user: tehuser
+  #обьявление переменных как файл и в коде
+  vars_files:
+    - project-vars
+#  vars:
+#    - node_file_location: /home/tehuser/react-nodejs-example-master/my-app
+#    - version: 1.0.0
   tasks:
     - name: Unpack the nodejs file
       unarchive:
         src: ./../distr/node-example.tgz
         dest: /home/tehuser
+      #это Registering variables, сюда попадает Return Values модуля
+      register: user_creation_result
+    - debug: msg={{user_creation_result.uid}}
     - name: Install dependencies
       npm:
-        path: /home/tehuser/react-nodejs-example-master/my-app
+        path: "{{node_file_location}}" #/home/tehuser/react-nodejs-example-master/my-app
     - name: Start the application
       command:
 #        в таком виде работает, но ansible зависает, потому что не сервис а процесс, лечится (нет) async and poll
-        chdir: /home/tehuser/react-nodejs-example-master/my-app
+        chdir:  "{{node_file_location}}" #/home/tehuser/react-nodejs-example-master/my-app
         cmd: npm start
       async: 1000
       poll: 0
     - name: Ensure app is running
       shell: ps aux | grep node
+#     это Registering variables, сюда попадает Return Values модуля
       register: app_status
     - debug: msg={{app_status.stdout}}
 

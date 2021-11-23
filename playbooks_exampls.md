@@ -83,3 +83,38 @@ tasks:
   become: True
   become_user: tehuser        
 ````
+
+###Переменные  Return Values (то что возвращают модули)
+```
+- name: Create new linux user for node app
+  hosts: all
+  tasks:
+    - name: Create linux user
+      user:
+        name: tehuser
+        comment: Tehuser Admin
+        group: admin
+      #это Registering variables, сюда попадает Return Values модуля
+      register: user_creation_result1
+    - debug: msg={{user_creation_result1}}
+```
+### Переменные в коде и в файле
+````
+- name: Deploy nodejs app
+  hosts: all
+  #обьявление переменных как файл и в коде
+  vars_files:
+    - project-vars
+#  vars:
+#    - node_file_location: /home/tehuser/react-nodejs-example-master/my-app
+#    - version: 1.0.0
+  tasks:
+    - name: Install dependencies
+      npm:
+        path: "{{node_file_location}}"
+````
+
+### Передача переменных из вне
+`--extra-vars или просто -e`
+
+`ansible-playbook -i hosts deploy-node.yaml -e "version=1.0.0 node_file_location=/home/tehuser/react-nodejs-example-master/my-app"`

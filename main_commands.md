@@ -8,6 +8,24 @@ https://docs.ansible.com/ansible/2.9/modules/modules_by_category.html
 пример установки коллекции
 https://galaxy.ansible.com/amazon/aws?extIdCarryOver=true&sc_cid=701f2000001OH6uAAG
 
+
+## Переменные Ансибл
+###Return Values
+### Common Return Values
+https://docs.ansible.com/ansible/2.9/reference_appendices/common_return_values.html
+###Переменные в коде
+### Передача переменных из вне
+`--extra-vars или просто -e`
+`ansible-playbook -i hosts deploy-node.yaml -e "version=1.0.0 node_file_location=/home/tehuser/react-nodejs-example-master/my-app"`
+### Внешний файл с переменными
+````
+version: 1.0.0
+node_file_location: /home/tehuser/react-nodejs-example-master/my-app
+user_home_dir: "{{node_file_location}}/{{version}}"
+````
+
+
+
 # Комманды Ansible
 
 ### ansible all -i hosts -m ping

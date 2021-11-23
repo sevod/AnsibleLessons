@@ -1,0 +1,3 @@
+version: 1.0.0
+node_file_location: /home/tehuser/react-nodejs-example-master/my-app
+user_home_dir: "{{node_file_location}}/{{version}}"
