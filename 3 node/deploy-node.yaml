@@ -11,20 +11,32 @@
           - nodejs
           - npm
 
+- name: Create new linux user for node app
+  hosts: all
+  tasks:
+    - name: Create linux user
+      user:
+        name: tehuser
+        comment: Tehuser Admin
+        group: admin
+
 - name: Deploy nodejs app
   hosts: all
+# эти две строки для настройки пользователя, без них будет рут
+  become: True
+  become_user: tehuser
   tasks:
     - name: Unpack the nodejs file
       unarchive:
         src: ./../distr/node-example.tgz
-        dest: /root/
+        dest: /home/tehuser
     - name: Install dependencies
       npm:
-        path: /root/react-nodejs-example-master/my-app
+        path: /home/tehuser/react-nodejs-example-master/my-app
     - name: Start the application
       command:
 #        в таком виде работает, но ansible зависает, потому что не сервис а процесс, лечится (нет) async and poll
-        chdir: /root/react-nodejs-example-master/my-app
+        chdir: /home/tehuser/react-nodejs-example-master/my-app
         cmd: npm start
       async: 1000
       poll: 0
@@ -33,7 +45,6 @@
       register: app_status
     - debug: msg={{app_status.stdout}}
 
-# node /root/react-nodejs-example-master/my-app/node_modules/.bin/react-scripts start --port 3001
 
 
 #  Так можно, но это избыточно

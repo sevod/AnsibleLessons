@@ -64,3 +64,22 @@ tasks:
 #       указыаем, что все это проделывается на удаленной машине, иначе он будет пытаться распаковать с локальной
         remote_src: yes
 ````
+
+### Создание и использование нового пользователя
+
+````
+- name: Create new linux user for node app
+  hosts: all
+  tasks:
+    - name: Create linux user
+      user:
+        name: tehuser
+        comment: Tehuser Admin
+        group: admin
+        
+- name: Deploy nodejs app
+  hosts: all
+# эти две строки для настройки пользователя, без них будет рут
+  become: True
+  become_user: tehuser        
+````
